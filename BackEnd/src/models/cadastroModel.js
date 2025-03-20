@@ -29,32 +29,29 @@ export const mostrarUsuarios = async () => {
     console.error(error);
   }
 };
-// export const atualizandoProduto = async (id_produto, nome_produto) => {
-//   console.log("ProdutoModule :: atualizandoProduto");
-//   const sql = `UPDATE produto SET nome_produto = ? WHERE id_produto = ?`;
-//   const params = [nome_produto, id_produto];
-//   try {
-//     const [resposta] = await conecxao.query(sql, params);
-//     // console.log(resposta);
-//     return [200, { mensagem: "Produto atualizado com sucesso" }];
-//   } catch (error) {
-//     console.error(error);
-//   }
-//  }
-//  export const deletandoProduto = async (id_produto) => {
-//   console.log("ProdutoModule :: deletandoProduto");
-//   const sql = `DELETE FROM produto WHERE id_produto = ?`;
-//   const params = [id_produto];
-//   try {
-//     const [resposta] = await conecxao.query(sql, params);
+export const atualizandoUsuario = async (idpessoa_fisica, senha) => { 
+  console.log('cadastroModel :: atualizandoUsuario');
 
-//     return [200, { mensagem: "Produto deletado com sucesso" }];
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
+  //SQL Update produto
+  const sql = `UPDATE produtos SET senha = ? WHERE idpessoa_fisica = ?`;
 
-// // mostrarProdutos();
-// // criandoProduto('ameixa');
-// // atualizandoProduto(1, 'maça');
-// // console.log(await deletandoProduto(2));
+  const params = [senha,idpessoa_fisica];
+
+  try {
+      const [resposta] = await conexao.query(sql,params);
+      //console.log(resposta);
+      if (resposta.affectedRows<1){
+          return [404,{mensagem:'Produto não encontrado'}]
+      }else{
+          return [200,{mensagem:'Produto atualizado com sucesso'}]
+      }
+  } catch (error) {
+      //console.error(error);
+      return[500,{
+          mensagem:'Erro Servidor',
+          code:error.code,
+          sql:error.sqlMessage
+      }]
+  }
+}
+

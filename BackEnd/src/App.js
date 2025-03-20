@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, readUsers } from './controllers/cadastroControllers.js';
+import { createUser, readUsers, updateSenha } from './controllers/cadastroControllers.js';
 const PORT = 3000;
 const app = express();
 
@@ -11,6 +11,7 @@ app.get('/', (req, res) => {
 
 app.post('/users', createUser );
 app.get('/mostrarUsuarios', readUsers );
+app.put('/users/:idpessoa_fisica',updateSenha);
 
 app.listen(PORT, () => {
   console.log(`API rodando na porta ${PORT}`);
