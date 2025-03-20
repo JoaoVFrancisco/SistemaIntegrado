@@ -29,7 +29,7 @@ export const readUsers = async (req, res) => {
 
 export const updateSenha = async (req, res) => {
 	console.log("cadastroControllers :: updateSenha");
-	const idpessoa_fisica = req.params.idpessoa_fisica;
+	const idpessoa_fisica = req.params.id_pessoa_fisica;
 	const senha = req.body.senha;
 
 	try {

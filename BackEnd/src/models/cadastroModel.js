@@ -29,21 +29,21 @@ export const mostrarUsuarios = async () => {
     console.error(error);
   }
 };
-export const atualizandoUsuario = async (idpessoa_fisica, senha) => { 
+export const atualizandoUsuario = async (id_pessoa_fisica, senha) => { 
   console.log('cadastroModel :: atualizandoUsuario');
 
   //SQL Update produto
-  const sql = `UPDATE produtos SET senha = ? WHERE idpessoa_fisica = ?`;
+  const sql = `UPDATE pessoa_fisica SET senha = ? WHERE id_pessoa_fisica = ?`;
 
-  const params = [senha,idpessoa_fisica];
+  const params = [senha,id_pessoa_fisica];
 
   try {
-      const [resposta] = await conexao.query(sql,params);
+      const [resposta] = await conecxao.query(sql,params);
       //console.log(resposta);
       if (resposta.affectedRows<1){
-          return [404,{mensagem:'Produto não encontrado'}]
+          return [404,{mensagem:'Usuario não encontrado'}]
       }else{
-          return [200,{mensagem:'Produto atualizado com sucesso'}]
+          return [200,{mensagem:'Senha do usuario atualizado com sucesso'}]
       }
   } catch (error) {
       //console.error(error);

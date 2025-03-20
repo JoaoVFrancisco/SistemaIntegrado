@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 
 app.post('/users', createUser );
 app.get('/mostrarUsuarios', readUsers );
-app.put('/users/:idpessoa_fisica',updateSenha);
+app.put('/:id_pessoa_fisica',updateSenha);
 
 app.listen(PORT, () => {
   console.log(`API rodando na porta ${PORT}`);
