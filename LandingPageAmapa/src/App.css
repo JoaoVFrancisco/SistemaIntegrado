@@ -173,7 +173,6 @@ body {
   border-radius: 0.5rem;
 }
 
-/* Services section */
 .services {
   padding: 4rem 0;
   background: white;
@@ -196,13 +195,33 @@ body {
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .service-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px); 
+  border-color: rgba(0, 0, 0, 0.2); 
 }
 
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4f46e5, #ec4899);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
 .service-icon {
   width: 4rem;
   height: 4rem;
@@ -294,7 +313,11 @@ body {
 /* Download section */
 .download {
   padding: 4rem 0;
-  background: linear-gradient(to bottom right, var(--color-blue-600), var(--color-purple-600));
+  background: linear-gradient(
+    to bottom right,
+    var(--color-blue-600),
+    var(--color-purple-600)
+  );
   color: white;
 }
 
