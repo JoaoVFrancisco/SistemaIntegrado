@@ -1,27 +1,39 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css"; // Arquivo de estilos
+import api from "../api";
+import "./Login.css";
 
 const Login = ({ login }) => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [alerta, setAlerta] = useState("");
+  const [carregando, setCarregando] = useState(false); // Adicione esta linha
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (!email || !senha) {
-      setAlerta("Preencha todos os campos!");
-      return;
-    }
+  const handleLogin = async () => {
+  setCarregando(true);
+  if (!email || !senha) {
+    setAlerta("Preencha todos os campos!");
+    setCarregando(false);
+    return;
+  }
 
-    // Simulação de autenticação
-    if (email === "admin@email.com" && senha === "123456") {
-      login();
-      navigate("/educa"); // Redireciona para a página principal após o login
+  try {
+    const response = await api.login({ email, senha });
+    if (response.success) {
+      login(); // Chama a prop para atualizar isAuthenticated
+      localStorage.setItem("token", response.token); // Armazena o token
+      localStorage.setItem("userData", JSON.stringify(response.user)); // Armazena dados do usuário
+      navigate("/app"); // Redireciona para a rota autenticada
     } else {
-      setAlerta("E-mail ou senha incorretos!");
+      setAlerta(response.message || "Credenciais inválidas");
     }
-  };
+  } catch (error) {
+    setAlerta("Erro ao conectar com o servidor");
+  } finally {
+    setCarregando(false);
+  }
+};
 
   return (
     <div className="login-container">
@@ -42,8 +54,12 @@ const Login = ({ login }) => {
           placeholder="Digite sua senha"
           className="login-input"
         />
-        <button onClick={handleLogin} className="login-button">
-          Entrar
+        <button 
+          onClick={handleLogin} 
+          className="login-button"
+          disabled={carregando}
+        >
+          {carregando ? "Carregando..." : "Entrar"}
         </button>
         <div className="cadastro-link">
           <span>Não tem uma conta? </span>
@@ -51,8 +67,8 @@ const Login = ({ login }) => {
         </div>
 
         <div className="esquecisenha-link">
-        <span>Esqueceu seu senha ? </span>
-        <button onClick={() => navigate("/esqueci-senha")}>Clique aqui</button>
+          <span>Esqueceu sua senha? </span>
+          <button onClick={() => navigate("/esqueci-senha")}>Clique aqui</button>
         </div>
       </div>
     </div>

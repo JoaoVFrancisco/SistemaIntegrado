@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api.js";
 import "./Cadastro.css";
 
 const Cadastro = () => {
@@ -50,15 +51,42 @@ const Cadastro = () => {
   };
 
   const handleCadastro = () => { 
-    if (!formData.nome || !formData.cpf || !formData.email) {
+    if (!formData.nome || !formData.documento_de_identificacao || !formData.email || !formData.senha) {
       setAlerta("⚠️ Preencha todos os campos obrigatórios!");
       return;
     }
   
-    console.log("Usuário cadastrado:", formData);
+    if (formData.senha !== formData.confirmarSenha) {
+      setAlerta("⚠️ As senhas não coincidem!");
+      return;
+    }
+  
+    if (formData.senha.length < 6) {
+      setAlerta("⚠️ A senha deve ter pelo menos 6 caracteres!");
+      return;
+    }
+  
+    const userData = {
+      nome: formData.nome,
+      email: formData.email,
+      senha: formData.senha,
+      foto: previewFoto || "",
+      cpf: formData.documento_de_identificacao,
+      genero: formData.genero,
+      logradouro: formData.endereco,
+      numero: formData.n_casa,
+      bairro: formData.bairro,
+      cidade: formData.cidade,
+      uf: formData.uf,
+      complemento: formData.complemento
+    };
+  
+    localStorage.setItem("userData", JSON.stringify(userData));
+    localStorage.setItem("usuarioLogado", JSON.stringify(userData)); // <- aqui adicionamos
+  
     setAlerta("");
-    alert("✅ Cadastro realizado com sucesso!");
-    navigate("/");
+    alert("Cadastro realizado com sucesso!");
+    navigate("/login");
   };
   
   return (
